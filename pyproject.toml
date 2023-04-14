@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "pylint-keyword-only-args-plugin"
+version = "0.1.0"
+description = "Plugin for pylint which checks that call statements has only keyword args"
+authors = ["Konstantin Shestakov <winmasta@yandex.ru>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/winmasta"
+repository = "https://github.com/winmasta"
+keywords = ["pylint", "positional", "args", "lint"]
+classifiers = [
+    "Development Status :: 4 - Beta ",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Quality Assurance",
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pylint = "*"
+pytest = "*"
+
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.group.test.dependencies]
+pytest = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pylint."messages control"]
+disable = ["missing-docstring"]
+
+[tool.pylint.format]
+max-line-length = 119

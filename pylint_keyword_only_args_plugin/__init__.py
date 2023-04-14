@@ -1,0 +1,1 @@
+from pylint_keyword_only_args_plugin.keyword_only_args import register
