@@ -19,7 +19,6 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.11"
 pylint = "*"
-pytest = "*"
 
 [tool.poetry.group.test]
 optional = true

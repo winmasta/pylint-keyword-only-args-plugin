@@ -1,0 +1,40 @@
+name: Pylint
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+
+    - name: Install poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python -
+
+    - name: Install packages
+      run: |
+        $HOME/.local/bin/poetry config virtualenvs.create false && $HOME/.local/bin/poetry install --with test
+
+    - name: Analysing the code with pylint
+      run: |
+        pylint pylint_keyword_only_args_plugin
+
+    - name: Run tests
+      run: |
+        pytest
