@@ -54,3 +54,39 @@ class TestUniqueReturnChecker(CheckerTestCase):
                 )
         ):
             self.checker.visit_call(node)
+
+    def test_builtin_success(self):
+        node = extract_node(
+            """                 
+            str(1)
+            int("1")
+            float(1)
+            bool(1)
+            list({1, 2})
+            set([1, 2])
+            tuple([1, 2])
+            dict([[1, 2]])
+            """
+        )
+        with self.assertNoMessages():
+            self.checker.visit_call(node)
+
+    def test_path_success(self):
+        node = extract_node(
+            """                 
+            Path("/")
+            """
+        )
+        with self.assertNoMessages():
+            self.checker.visit_call(node)
+
+    def test_skip_names_success(self):
+        self.checker.linter.config.skip_names_list = "custom_func_1,custom_func_2"
+        node = extract_node(
+            """                 
+            custom_func_1(1)
+            custom_func_2(2)
+            """
+        )
+        with self.assertNoMessages():
+            self.checker.visit_call(node)
