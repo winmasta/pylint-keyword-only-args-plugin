@@ -1,3 +1,5 @@
+import builtins
+
 from astroid.nodes import Call
 from pylint.checkers import BaseChecker
 
@@ -15,5 +17,8 @@ class KeywordOnlyArgsChecker(BaseChecker):
     }
 
     def visit_call(self, node: Call) -> None:
+        if node.func.name in dir(builtins):
+            return
+
         if node.args:
             self.add_message("keyword-only-args", node=node)
