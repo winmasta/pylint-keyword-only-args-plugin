@@ -1,7 +1,7 @@
 import builtins
 from typing import Iterable
 
-from astroid.nodes import Call, Assign, Tuple
+from astroid.nodes import Call, Assign, Tuple, Attribute
 from pylint.checkers import BaseChecker
 
 
@@ -34,8 +34,13 @@ class KeywordOnlyArgsChecker(BaseChecker):
 
         skip_names_list = [*dir(builtins), *self.linter.config.skip_names_list.split(","), "Path"]
         for _node in nodes:
-            if _node.func.name in skip_names_list:
+            if isinstance(_node.func, Attribute):
+                node_name = _node.func.attrname
+            else:
+                node_name = _node.func.name
+
+            if node_name in skip_names_list:
                 return
 
-            if node.args:
+            if _node.args:
                 self.add_message("keyword-only-args", node=_node)
