@@ -110,3 +110,13 @@ class TestUniqueReturnChecker(CheckerTestCase):
         )
         with self.assertNoMessages():
             self.checker.visit_call(node)
+
+    def test_func_is_attr_success(self):
+        self.checker.linter.config.skip_names_list = "safe_load,read"
+        node = extract_node(
+            """                 
+            prom_conf = safe_load(f.read())
+            """
+        )
+        with self.assertNoMessages():
+            self.checker.visit_call(node)
