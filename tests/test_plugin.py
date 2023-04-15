@@ -90,3 +90,23 @@ class TestUniqueReturnChecker(CheckerTestCase):
         )
         with self.assertNoMessages():
             self.checker.visit_call(node)
+
+    def test_assign_success(self):
+        self.checker.linter.config.skip_names_list = "custom_func_1"
+        node = extract_node(
+            """                 
+            value = custom_func_1(1)
+            """
+        )
+        with self.assertNoMessages():
+            self.checker.visit_call(node)
+
+    def test_assign_tuple_success(self):
+        self.checker.linter.config.skip_names_list = "custom_func_1,custom_func_2"
+        node = extract_node(
+            """                 
+            value = custom_func_1(1), custom_func_2(2)
+            """
+        )
+        with self.assertNoMessages():
+            self.checker.visit_call(node)
