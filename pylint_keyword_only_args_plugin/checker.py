@@ -1,11 +1,8 @@
 from astroid.nodes import Call
 from pylint.checkers import BaseChecker
-from pylint.interfaces import IAstroidChecker
 
 
 class KeywordOnlyArgsChecker(BaseChecker):
-    __implements__ = IAstroidChecker
-
     name = "keyword-only-args"
     priority = -100
     msgs = {

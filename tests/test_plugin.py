@@ -31,7 +31,7 @@ class TestUniqueReturnChecker(CheckerTestCase):
                     node=node,
                     col_offset=0,
                     end_line=2,
-                    end_col_offset=9,
+                    end_col_offset=15,
                 )
         ):
             self.checker.visit_call(node)
@@ -50,7 +50,7 @@ class TestUniqueReturnChecker(CheckerTestCase):
                     node=node,
                     col_offset=0,
                     end_line=2,
-                    end_col_offset=9,
+                    end_col_offset=17,
                 )
         ):
             self.checker.visit_call(node)
