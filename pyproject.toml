@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pylint-keyword-only-args-plugin"
-version = "0.2.2"
+version = "0.2.3"
 description = "Plugin for pylint which checks that call statements has only keyword args"
 authors = ["Konstantin Shestakov <winmasta@yandex.ru>"]
 license = "MIT"
@@ -24,7 +24,9 @@ pylint = "*"
 optional = true
 
 [tool.poetry.group.test.dependencies]
+black = "*"
 pytest = "*"
+ruff = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -35,3 +37,8 @@ disable = ["missing-docstring"]
 
 [tool.pylint.format]
 max-line-length = 119
+
+[tool.ruff]
+line-length = 119
+select = ["ALL"]
+ignore = ["D100", "D101", "D102", "D103", "D104", "D203", "D212"]

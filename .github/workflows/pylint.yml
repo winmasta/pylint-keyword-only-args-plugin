@@ -31,9 +31,17 @@ jobs:
       run: |
         $HOME/.local/bin/poetry config virtualenvs.create false && $HOME/.local/bin/poetry install --with test
 
+    - name: Analysing code formatting with black
+      run: |
+        black --check pylint_keyword_only_args_plugin tests
+
     - name: Analysing the code with pylint
       run: |
-        pylint pylint_keyword_only_args_plugin
+        pylint pylint_keyword_only_args_plugin tests
+
+    - name: Analysing the code with ruff
+      run: |
+        ruff pylint_keyword_only_args_plugin tests
 
     - name: Run tests
       run: |

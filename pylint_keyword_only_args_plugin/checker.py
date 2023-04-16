@@ -1,8 +1,11 @@
 import builtins
-from typing import Iterable
+from typing import TYPE_CHECKING
 
-from astroid.nodes import Call, Assign, Tuple, Attribute
+from astroid.nodes import Assign, Attribute, Call, Tuple
 from pylint.checkers import BaseChecker
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 
 class KeywordOnlyArgsChecker(BaseChecker):
@@ -19,11 +22,15 @@ class KeywordOnlyArgsChecker(BaseChecker):
     options = (
         (
             "skip-names-list",
-            {"default": "", "type": "string", "help": "Comma separated list of callable names to skip"}
+            {
+                "default": "",
+                "type": "string",
+                "help": "Comma separated list of callable names to skip",
+            },
         ),
     )
 
-    def visit_call(self, node: Call) -> None:
+    def visit_call(self: "KeywordOnlyArgsChecker", node: Call) -> None:
         nodes: Iterable = [node]
         if isinstance(node, Assign):
             if isinstance(node.value, Call):
@@ -32,12 +39,17 @@ class KeywordOnlyArgsChecker(BaseChecker):
             if isinstance(node.value, Tuple):
                 nodes = node.value.elts
 
-        skip_names_list = [*dir(builtins), *self.linter.config.skip_names_list.split(","), "Path"]
+        skip_names_list = [
+            *dir(builtins),
+            *self.linter.config.skip_names_list.split(","),
+            "Path",
+        ]
         for _node in nodes:
-            if isinstance(_node.func, Attribute):
-                node_name = _node.func.attrname
-            else:
-                node_name = _node.func.name
+            node_name = (
+                _node.func.attrname
+                if isinstance(_node.func, Attribute)
+                else _node.func.name
+            )
 
             if node_name in skip_names_list:
                 return
